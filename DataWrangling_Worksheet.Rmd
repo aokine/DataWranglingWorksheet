@@ -1,0 +1,222 @@
+---
+title: "Worksheet: Data Wrangling Worksheet"
+subtitle: "STT 2860 Intro to Data Mgmt & Visualization" 
+author: "PUT YOUR NAME HERE"
+date: "`r format(Sys.time(), '%A, %B %d, %Y @ %I:%M %p')`"
+output: 
+  html_document: 
+    theme: yeti
+    highlight: textmate
+    toc: true
+    toc_depth: 4 
+---
+
+```{r globaloptions, include = FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE,
+  comment = NA
+)
+```
+
+### Packages Used
+
+```{r}
+# load all packages used here
+library(nycflights13)
+library(ggplot2)
+library(dplyr)
+
+```
+
+## Display data
+
+In this worksheet, we will use the `flights` data frame in the `nycflights13` package. Use the `glimpse()` to display the `flights` data
+
+```{r }
+
+```
+
+
+
+
+## `filter` rows 
+
+- We begin by focusing only on flights from New York City to Portland, Oregon. 
+
+    - The dest destination code (or airport code) for Portland, Oregon is "PDX". 
+    - Run a code to ensure that only flights heading to Portland are chosen here:
+
+
+
+```{r }
+
+```
+
+
+
+
+
+## `filter` rows 
+
+- We filter flights for all rows that
+    
+    - departed from JFK and 
+    - were heading to Burlington, Vermont ("BTV") or Seattle, Washington ("SEA") and
+    - departed in the months of October, November, or December.
+    
+
+
+```{r }
+
+```
+
+
+
+
+
+
+
+## `filter` rows 
+
+
+Lets filter rows corresponding to flights that didn’t go to Burlington, VT or Seattle, WA. 
+
+
+```{r }
+
+```
+
+
+
+
+
+
+## `filter` rows 
+
+We filter flights for all rows that were heading to the following ariports: `SEA`, `SFO`, `PDX`, `BTV` and `BDL`. 
+
+
+```{r }
+
+```
+
+
+
+
+
+## `summarize` variables
+
+Let’s calculate two summary statistics (mean and standard deviation) of the `temp` temperature variable in the `weather` data frame from `nycflights13` package. 
+
+
+```{r }
+
+```
+
+
+
+
+
+
+
+## `group_by` rows
+
+Say instead of a single summary statistics (mean and standard deviation) of temperature for the whole year, you would like 12 summary statistics, one for each of the 12 months separately. 
+    
+
+```{r }
+
+```
+
+
+
+
+## Grouping by more than one variable
+
+Provide the frequency table by grouping by `origin` and `month`. Hint: use the `n()` function. 
+ 
+ 
+```{r }
+
+```
+
+
+
+
+
+
+
+## `mutate` existing variables
+
+
+For example, we can create a new variable by converting temperatures from $^\circ$F to $^\circ$C using the formula
+$$\text{temp in C}=\frac{\text{temp in F}-32}{1.8}$$
+
+## `mutate` existing variables
+
+We can apply this formula above to the `temp` variable using the `mutate()` function from the `dplyr` package.
+
+
+```{r }
+
+```
+
+
+
+
+
+## `mutate` existing variables
+
+Let’s now compute monthly average temperatures in both $^\circ$F and $^\circ$C. 
+
+
+```{r }
+
+```
+
+
+
+
+
+## `arrange` and sort rows
+
+
+Suppose we are interested in determining the most frequent destination airports for all domestic flights departing from New York City in 2013. 
+
+
+
+```{r }
+
+```
+
+
+
+
+
+## `select` variables
+
+We’ve seen that the `flights` data frame in the `nycflights13` package contains 19 different variables. However, say you only need two of these 19 variables, say `carrier` and `flight`. You can `select()` these two variables:
+
+
+```{r }
+
+```
+
+
+Let’s say instead you want to drop, or de-select, certain variables. For example, lets say we want to remove the `year` in the `flights` data frame. We can deselect year by using the `-` sign:
+
+
+```{r }
+
+```
+
+
+
+
+
+
+***
+```{r}
+sessionInfo()
+```
