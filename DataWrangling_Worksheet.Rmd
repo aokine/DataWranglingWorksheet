@@ -19,204 +19,336 @@ knitr::opts_chunk$set(
 )
 ```
 
-### Packages Used
 
-```{r}
-# load all packages used here
+## How We’ll Work Today (Groups + Individual Submission)
+
+* **Use the same groups as Project 1.**
+* You are encouraged to **talk, compare code, and help each other debug**, but **each student must submit their own completed worksheet to GitHub** (your own repo).
+* If you get stuck, follow this order:
+
+  1. read the error carefully
+  2. ask your group
+  3. ask me
+
+---
+
+## GitHub Workflow Reminder (Do This All Class)
+
+**Before you start**
+
+* Pull the most recent version (if needed).
+* Open the `.Rmd`, knit once to make sure it runs.
+
+**During work**
+
+* Work in small steps.
+* After each checkpoint section: **Knit → Commit → Push**
+
+---
+
+## Learning Notes (You will write as you go)
+
+Create short notes while you work. You’ll fill these in at the end.
+
+* **One thing I learned today:**
+* **One thing that confused me at first but makes sense now:**
+* **One dplyr/ggplot trick I want to remember:**
+
+---
+
+# Packages Used
+
+```{r packages}
+library(tidyverse)
 library(nycflights13)
-library(ggplot2)
-library(dplyr)
-
+library(skimr)
 ```
 
-## Display data
+---
 
-In this worksheet, we will use the `flights` data frame in the `nycflights13` package. Use the `glimpse()` to display the `flights` data
+# Datasets Used (nycflights13)
 
-```{r }
-
+```{r data-load}
+flights_tbl <- nycflights13::flights
+weather_tbl <- nycflights13::weather
 ```
 
+---
 
+## Display the data
 
+Use `glimpse()` to display `flights_tbl`.
 
-## `filter` rows 
-
-- We begin by focusing only on flights from New York City to Portland, Oregon. 
-
-    - The dest destination code (or airport code) for Portland, Oregon is "PDX". 
-    - Run a code to ensure that only flights heading to Portland are chosen here:
-
-
-
-```{r }
-
+```{r flights-glimpse}
+# TODO: glimpse(flights_tbl)
 ```
 
+Use `skim()` to explore `weather_tbl`.
 
-
-
-
-## `filter` rows 
-
-- We filter flights for all rows that
-    
-    - departed from JFK and 
-    - were heading to Burlington, Vermont ("BTV") or Seattle, Washington ("SEA") and
-    - departed in the months of October, November, or December.
-    
-
-
-```{r }
-
+```{r weather-skim}
+# TODO: skim(weather_tbl)
 ```
 
+---
 
+## Checkpoint 1 (Setup + Data)
 
+**Checkpoint task:** Knit your document. If it works, **commit and push** with:
 
+> `worksheet-wrangling: checkpoint-1 (setup + data)`
 
+---
 
+# Part A: `filter()` rows 
 
-## `filter` rows 
+## 1) NYC to Portland (PDX)
 
+The destination airport code for Portland, Oregon is `"PDX"`.
+Filter flights so that **only flights to PDX** remain.
 
-Lets filter rows corresponding to flights that didn’t go to Burlington, VT or Seattle, WA. 
+Save as `to_pdx`.
 
-
-```{r }
-
+```{r filter-pdx}
+# TODO
 ```
 
+## 2) JFK to BTV or SEA in Oct/Nov/Dec
 
+Filter flights that:
 
+* depart from **JFK**
+* go to **BTV** *or* **SEA**
+* are in **October, November, or December** (months 10, 11, 12)
 
+Save as `jfk_btv_sea_fall`.
 
-
-## `filter` rows 
-
-We filter flights for all rows that were heading to the following ariports: `SEA`, `SFO`, `PDX`, `BTV` and `BDL`. 
-
-
-```{r }
-
+```{r filter-jfk-btv-sea}
+# TODO
 ```
 
+## 3) Flights that did NOT go to BTV or SEA
 
+Filter flights that **did not** go to Burlington (BTV) or Seattle (SEA).
+Save as `not_btv_sea`.
 
-
-
-## `summarize` variables
-
-Let’s calculate two summary statistics (mean and standard deviation) of the `temp` temperature variable in the `weather` data frame from `nycflights13` package. 
-
-
-```{r }
-
+```{r filter-not-btv-sea}
+# TODO
 ```
 
+## 4) Filter to a set of airports
 
+Filter flights where `dest` is one of:
 
+`SEA`, `SFO`, `PDX`, `BTV`, `BDL`
 
+Save as `selected_airports`.
 
-
-
-## `group_by` rows
-
-Say instead of a single summary statistics (mean and standard deviation) of temperature for the whole year, you would like 12 summary statistics, one for each of the 12 months separately. 
-    
-
-```{r }
-
+```{r filter-airport-set}
+# TODO
 ```
 
+### Quick interpretation (1 sentence)
 
+What does using `%in%` help you do efficiently?
 
+**Answer:**
 
-## Grouping by more than one variable
+---
 
-Provide the frequency table by grouping by `origin` and `month`. Hint: use the `n()` function. 
- 
- 
-```{r }
+## Checkpoint 2 (filter tasks)
 
+**Checkpoint task:** Knit your document. If it works, **commit and push** with:
+
+> `worksheet-wrangling: checkpoint-2 (filter)`
+
+---
+
+# Part B: `summarize()` + `group_by()` with weather
+
+## 5) Temperature summary for the whole year
+
+Using `weather_tbl`, compute:
+
+* mean temperature
+* standard deviation temperature
+
+Use the `temp` column. Save as `temp_summary_year`.
+
+```{r summarize-temp-year}
+# TODO
 ```
 
+## 6) Monthly temperature summary (12 summaries)
 
+Now compute mean and standard deviation **by month**.
+Save as `temp_summary_month`.
 
-
-
-
-
-## `mutate` existing variables
-
-
-For example, we can create a new variable by converting temperatures from $^\circ$F to $^\circ$C using the formula
-$$\text{temp in C}=\frac{\text{temp in F}-32}{1.8}$$
-
-## `mutate` existing variables
-
-We can apply this formula above to the `temp` variable using the `mutate()` function from the `dplyr` package.
-
-
-```{r }
-
+```{r summarize-temp-month}
+# TODO
 ```
 
+## 7) Grouping by more than one variable
 
+Create a frequency table counting how many weather observations you have for each `origin` and `month`.
 
+Hint: `group_by(origin, month)` then `summarize(n = n())` or `count(origin, month)`.
 
+Save as `weather_counts`.
 
-## `mutate` existing variables
-
-Let’s now compute monthly average temperatures in both $^\circ$F and $^\circ$C. 
-
-
-```{r }
-
+```{r groupby-origin-month}
+# TODO
 ```
 
+---
 
+## Checkpoint 3 (summarize + group_by)
 
+**Checkpoint task:** Knit your document. If it works, **commit and push** with:
 
+> `worksheet-wrangling: checkpoint-3 (summarize + group_by)`
 
-## `arrange` and sort rows
+---
 
+# Part C: `mutate()` (Fahrenheit → Celsius)
 
-Suppose we are interested in determining the most frequent destination airports for all domestic flights departing from New York City in 2013. 
+## 8) Add Celsius temperature
 
+Create a new dataset called `weather_c` that adds:
 
+\[\text{temp_c}=\frac{\text{temp}-32}{1.8}\]
 
-```{r }
-
+```{r mutate-celsius}
+# TODO
 ```
 
+## 9) Monthly average temperature in both °F and °C
 
+Using `weather_c`, compute monthly averages (by month) for:
 
+* average temp in °F
+* average temp in °C
 
+Save as `monthly_temp_both`.
 
-## `select` variables
-
-We’ve seen that the `flights` data frame in the `nycflights13` package contains 19 different variables. However, say you only need two of these 19 variables, say `carrier` and `flight`. You can `select()` these two variables:
-
-
-```{r }
-
-```
-
-
-Let’s say instead you want to drop, or de-select, certain variables. For example, lets say we want to remove the `year` in the `flights` data frame. We can deselect year by using the `-` sign:
-
-
-```{r }
-
+```{r monthly-avg-both}
+# TODO
 ```
 
 
 
 
+### REQUIRED PLOT (after wrangling)
+
+Now that you created `temp_summary_month` in Part B, make a plot showing the mean monthly temperature across the year.
+
+Requirements:
+
+- Use `temp_summary_month`
+
+- Put month on the x-axis
+
+- Put the monthly mean temperature on the y-axis
+
+- Use either points + a line, or a line only
+
+- Add a title and axis labels
+
+```{r plot}
+# TODO: Use temp_summary_month to make a plot of mean monthly temperature
+# Hint: ggplot(temp_summary_month, aes(x = month, y = mean_temp)) + ...
+```
 
 
-***
+
+
+
+
+---
+
+## Checkpoint 4 (mutate + required plot)
+
+**Checkpoint task:** Knit your document. If it works, **commit and push** with:
+
+> `worksheet-wrangling: checkpoint-4 (mutate)`
+
+---
+
+# Part D: `arrange()` + `select()`
+
+## 10) Most frequent destination airports (domestic flights)
+
+We want the most frequent destination airports for **domestic** flights.
+
+In this dataset, you can treat *domestic* as flights whose `dest` is in the U.S. airports list is not directly attached here, so we’ll use a simple proxy:
+
+**Use only flights where `dest` is NOT missing** and then count destinations.
+
+Create a table of destination counts:
+
+* `dest`
+* `n` (number of flights)
+
+Sort from most to least and show top 10. Save as `top_destinations`.
+
+```{r arrange-top-dest}
+# TODO
+```
+
+## 11) `select()` and deselect
+
+Create a dataset called `carrier_flight_only` that keeps only:
+
+* `carrier`
+* `flight`
+
+```{r select-keep}
+# TODO
+```
+
+Create a dataset called `no_year` that drops the `year` column from `flights_tbl`.
+
+```{r select-drop}
+# TODO
+```
+
+---
+
+## Checkpoint 5 (arrange + select)
+
+**Checkpoint task:** Knit your document. If it works, **commit and push** with:
+
+> `worksheet-wrangling: checkpoint-5 (arrange + select)`
+
+---
+
+# Reflection (Individual)
+
+Fill these in before you submit.
+
+1. **One thing I learned today:**
+
+2. **One thing that confused me at first but makes sense now:**
+
+3. **One dplyr trick I want to remember:**
+
+4. **Choose-your-own reflection (pick ONE):**
+
+* A. One filter you think is useful in real life and why
+* B. One summary table you would show a manager and why
+* C. One question you would investigate next using flights or weather
+
+**Answer:**
+
+---
+
+## Final Submission
+
+**Final task:** Knit one last time. Then **commit and push** with:
+
+> `worksheet-wrangling: final (reflection + cleanup)`
+
+---
+
 ```{r}
 sessionInfo()
 ```
